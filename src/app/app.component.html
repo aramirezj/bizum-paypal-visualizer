@@ -1,0 +1,77 @@
+<!-- Barra de navegación -->
+<mat-toolbar color="primary">
+
+    <span>{{title}}</span>
+    <span class="example-spacer"></span>
+</mat-toolbar>
+
+
+<!-- Contenido de la web -->
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="side">
+    </mat-drawer>
+
+    <div class="example-sidenav-content">
+        <!-- Resultado del enrutamiento -->
+
+        <app-recogida (bizumsE)="obtieneBizums($event)" (paypalsE)="obtienePaypals($event)"></app-recogida>
+
+        <div fxLayout="row wrap" fxLayoutGap="2%" fxLayoutAlign="space-between" style="margin-bottom: 5vh;">
+            <h2 *ngIf="bizums" fxFlex="48">Has recibido un total de {{bizums.total}} € en {{bizums.pagos.length}} bizums
+                en total</h2>
+            <h2 *ngIf="paypals" fxFlex="48">Has recibido un total de {{paypals.total}} € en {{paypals.pagos.length}}
+                paypal en total
+            </h2>
+        </div>
+
+        <div class="centro" fxLayout="column" fxLayoutAlign="center">
+            <form [formGroup]="formularioRestriccion">
+                <mat-form-field appearance="fill">
+                    <mat-label>Personas por las que filtrar</mat-label>
+                    <mat-select formControlName="personasBloqueadas" multiple>
+                        <mat-option *ngFor="let persona of personas" [value]="persona">{{persona}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+            <div *ngIf="bizumsFiltrados || paypalsFiltrados">
+                <p>Filtrando a un total de {{personas.length}} personas...</p>
+                <h2>Tu total filtrado es {{bizumsFiltrados?.total ?? 0 + paypalsFiltrados?.total ?? 0}} €</h2>
+            </div>
+        </div>
+
+
+
+        <div fxLayout="row wrap" fxLayoutGap="2%" fxLayoutAlign="space-between" style="margin-bottom: 5vh;">
+            <div fxFlex="48">
+                <div *ngIf="bizumsFiltrados">
+                    <h3>Has recibido un total de {{bizumsFiltrados.total}} € en {{bizumsFiltrados.pagos.length}} bizums
+                    </h3>
+                    <arja-tabla #tBizums [datos]="bizumsFiltrados.pagos" [modelo]="['remitente','fecha','cantidad']"
+                        [visual]="['Remitente','Fecha','Cantidad']" [buscador]="true"></arja-tabla>
+                </div>
+            </div>
+            <div fxFlex="48">
+                <div *ngIf="paypalsFiltrados">
+                    <h3>Has recibido un total de {{paypalsFiltrados.total}} € en {{paypalsFiltrados.pagos.length}}
+                        paypal
+                    </h3>
+                    <arja-tabla #tPaypals [datos]="paypalsFiltrados.pagos" [modelo]="['remitente','fecha','cantidad']"
+                        [visual]="['Remitente','Fecha','Cantidad']" [buscador]="true"></arja-tabla>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Gráficos-->
+        <app-graficos *ngIf="pagosListos" [pagosPersonas]="pagosPersonas"></app-graficos>
+
+
+
+
+
+
+        <router-outlet></router-outlet>
+    </div>
+
+</mat-drawer-container>

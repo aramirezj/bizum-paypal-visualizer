@@ -1,0 +1,106 @@
+<!-- Busqueda -->
+<app-buscador *ngIf="buscador || filtroAvanzado" [filtroAvanzado]="filtroAvanzado" (notify)="busqueda($event)">
+</app-buscador>
+<!-- Tabla en sí-->
+<div class="tablaMaterial" matSort (matSortChange)="ordenacion($event)">
+    <!-- Encabezado de la tabla -->
+    <div class="filaEncabezado">
+        <div *ngFor="let titulo of visual;let i=index" [mat-sort-header]="modelo[i]" class="elementoEncabezado pointer">
+            <span [innerHTML]="titulo"></span>
+        </div>
+        <div *ngIf="objetos" class="elementoEncabezado">
+            <span *ngFor="let objeto of objetos">{{objeto.nombreVisual}}</span>
+        </div>
+        <div *ngIf="selectsPro" class="elementoEncabezado selectPro">
+            <span *ngFor="let selectPro of selectsPro">{{selectPro.columnaVisual}}</span>
+        </div>
+        <div class="elementoEncabezado">Acciones</div>
+    </div>
+
+    <!-- Condicional para la paginación, para saber que elementos mostrar en pantalla -->
+    <div class="contenidoTabla">
+        <ng-container *ngFor="let elemento of datosAMostrar;let i = index">
+            <ng-container [ngTemplateOutlet]="paginacionAsincrona ? paginacionAsincronaT : paginacionLocalT"
+                [ngTemplateOutletContext]="{elemento:elemento,i:i}"></ng-container>
+            <ng-container *ngIf="elemento===elementoSeleccionado && elemento[nextTabla]?.length > 0"
+                [ngTemplateOutlet]="elementoExpandido" [ngTemplateOutletContext]="{elemento:elemento}">
+            </ng-container>
+        </ng-container>
+
+
+    </div>
+</div>
+<mat-paginator *ngIf="paginador" [length]="pageEvent.length" [pageSize]="pageEvent.pageSize"
+    [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageEvent.pageIndex" (page)="paginacion($event)">
+</mat-paginator>
+
+
+<!-- PAGINACIONLOCAL Template para la evaluación de datos si utiliza la paginación local -->
+<ng-template #paginacionLocalT let-elemento='elemento' let-i='i'>
+    <div *ngIf="((pageEvent.pageIndex+1)*pageEvent.pageSize) > i && i >= ((pageEvent.pageIndex)*pageEvent.pageSize)"
+        [class]="elemento === elementoSeleccionado ? 'filaContenido filaSeleccionada pointer' : seleccionable ? 'filaContenido pointer' : 'filaContenido' "
+        (click)="seleccion(elemento)">
+        <!--Contenido del TD-->
+        <ng-template [ngTemplateOutlet]="TDContenido" [ngTemplateOutletContext]="{elemento:elemento}">
+        </ng-template>
+    </div>
+</ng-template>
+
+<!-- PAGINACIONASINCRONA Template para la evaluación de datos si usa la paginación asincrona-->
+<ng-template #paginacionAsincronaT let-elemento='elemento' let-i='i'>
+    <div [class]="elemento === elementoSeleccionado ? 'filaContenido filaSeleccionada pointer' : seleccionable ? 'filaContenido pointer' : 'filaContenido' "
+        (click)="seleccion(elemento)">
+        <!--Contenido del TD-->
+        <ng-template [ngTemplateOutlet]="TDContenido" [ngTemplateOutletContext]="{elemento:elemento}">
+        </ng-template>
+    </div>
+</ng-template>
+
+<!-- TDCONTENIDO Template utilizada para cargar el TD en cuestión -->
+<ng-template #TDContenido let-elemento='elemento'>
+
+    <!--Elementos normales del modelo-->
+    <div *ngFor="let atributo of modelo" class="elementoContenido">
+        <app-elemento-tabla [campo]="elemento[atributo]" [atributo]="atributo" [elemento]="elemento" [formatoTabla]="formatos">
+        </app-elemento-tabla>
+    </div>
+    <!-- Objetos que puede tener la tabla-->
+    <div *ngFor="let objeto of objetos;let j=index" class="elementoContenido">
+        <span (click)="$event.stopPropagation()">
+            <a class="nombreObjeto" (click)="openInspeccion(elemento,j)" *ngIf="elemento[objeto.nombreModelo]">
+                {{objeto.peticion === undefined ? elemento[objeto.nombreModelo][objeto.nombreAMostrar] :
+                elemento[objeto.nombreModelo]}}</a>
+        </span>
+    </div>
+    <!-- Acciones de la tabla-->
+    <div class="elementoContenido elementoAcciones">
+        <app-accion-tabla (click)="$event.stopPropagation()" *ngFor="let accion of accionesParsed" [accion]="accion"
+            [elemento]="elemento" (clicked)="doAccion(elemento,accion.funcion)"></app-accion-tabla>
+        <i class="material-icons iconExpandir"
+            [matTooltip]="elementoSeleccionado === elemento ? 'Contraer elemento': 'Expandir elemento'"
+            matTooltipPosition="above">{{elementoSeleccionado === elemento ? 'remove_circle' : 'add_box'}}</i>
+        <div class="clear"></div>
+    </div>
+</ng-template>
+
+<!-- ELEMENTOEXPANDIDO Template utilizada para reflejar el contenido de la expansión -->
+<ng-template #elementoExpandido let-elemento='elemento'>
+    <div class="elementoExpandido" [@inOutAnimation]>
+        <p class="anidacionMensaje">{{tituloHijo}}</p>
+        <arja-tabla *ngIf="!nextTablaInfinita" [datos]="elemento[nextTabla]" [visual]="visuales[indiceAnidacion]"
+            [modelo]="modelos[indiceAnidacion]" [paginador]="false"
+            [accionesCondicionales]="nivelesAccionesCondicionales ? nivelesAccionesCondicionales[indiceAnidacion] : null"
+            [acciones]="nivelesAcciones ? nivelesAcciones[indiceAnidacion] : null" [formatos]="formatos"
+            [selectsPro]="nivelesSelectsPro ? nivelesSelectsPro[indiceAnidacion] : null"
+            [subjectLoaded]="childrenLoaded" (notify)="notifyTablaHija($event, nextTabla,false)">
+        </arja-tabla>
+        <arja-tabla-infinita *ngIf="nextTablaInfinita" [datos]="elemento[nextTabla]" [visuales]="visuales"
+            [niveles]="niveles" [modelos]="modelos" [nivelesTitulos]="nivelesTitulos"
+            [peticionesInfinitas]="peticionesInfinitas" [paginador]="false" [nivelesTitulos]="nivelesTitulos"
+            [nivelesAccionesCondicionales]="nivelesAccionesCondicionales" [nivelesAcciones]="nivelesAcciones"
+            [formatos]="formatos" [nivelesSelectsPro]="nivelesSelectsPro" [indiceAnidacion]="indiceAnidacion"
+            [herencia]="herencia"
+            (notify)="notifyTablaHija($event, nextTabla,true)">
+        </arja-tabla-infinita>
+    </div>
+</ng-template>

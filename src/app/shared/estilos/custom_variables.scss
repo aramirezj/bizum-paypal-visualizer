@@ -1,0 +1,118 @@
+$custom-primary-color: #286aba;
+$custom-primary-color-light: #6598ed;
+$custom-secondary-color: #959494;
+$custom-tertiary-color: #f44336;
+$custom-accent-color: #ff4081;
+
+$table-header-exp: #566477;
+
+$custom-primary-palette-colors: (
+    50 : #e5edf7,
+    100 : #bfd2ea,
+    200 : #94b5dd,
+    300 : #6997cf,
+    400 : #4880c4,
+    500 : #286aba,
+    600 : #2462b3,
+    700 : #1e57ab,
+    800 : #184da3,
+    900 : #0f3c94,
+    A100 : #c4d6ff,
+    A200 : #91b2ff,
+    A400 : #5e8eff,
+    A700 : #457cff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #ffffff,
+    )
+);
+
+$custom-secondary-palette-colors: (
+    50 : #f2f2f2,
+    100 : #dfdfdf,
+    200 : #cacaca,
+    300 : #b5b4b4,
+    400 : #a5a4a4,
+    500 : #959494,
+    600 : #8d8c8c,
+    700 : #828181,
+    800 : #787777,
+    900 : #676565,
+    A100 : #fce2e2,
+    A200 : #f7b4b4,
+    A400 : #ff7979,
+    A700 : #ff5f5f,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$custom-tertiary-palette-colors: (
+    50 : #fee8e7,
+    100 : #fcc7c3,
+    200 : #faa19b,
+    300 : #f77b72,
+    400 : #f65f54,
+    500 : #f44336,
+    600 : #f33d30,
+    700 : #f13429,
+    800 : #ef2c22,
+    900 : #ec1e16,
+    A100 : #ffffff,
+    A200 : #ffe9e9,
+    A400 : #ffb8b6,
+    A700 : #ff9f9c,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+// Variables usadas en custom-theme para crear el tema personalizado de angular material.
+$md-primary-palette-colors: $custom-primary-palette-colors;
+$md-accent-palette-colors: $custom-secondary-palette-colors;
+$md-warn-palette-colors: $custom-tertiary-palette-colors;
+$jcyl-primary-color: $custom-primary-color;
+$jcyl-secondary-color: $custom-secondary-color;
+$jcyl-tertiary-color: $custom-tertiary-color;
+
+//Menú lateral
+$paddingContainer: 2.5vw;
+$sizeSidenav: 20vw;

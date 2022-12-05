@@ -1,0 +1,21 @@
+@import "../../estilos/custom_variables.scss";
+.iconAvanzado {
+    cursor: pointer;
+}
+
+.chipSelected {
+    background-color: $custom-primary-color;
+    color: white;
+}
+mat-chip-list {
+    margin-bottom: 3vh;
+}
+
+mat-form-field {
+    margin-right: 1vw;
+    width: 100%;
+}
+
+.iconoMas {
+    vertical-align: initial;
+}

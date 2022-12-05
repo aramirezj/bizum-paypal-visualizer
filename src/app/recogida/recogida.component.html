@@ -1,0 +1,39 @@
+<div fxLayout="row wrap" fxLayoutGap="2%" fxLayoutAlign="space-between">
+    <div fxFlex="48">
+        <h4>Tienes la opción de subir un fichero exportando tus SMSs de tus bizums en formato XML, para ello te
+            recomendamos la aplicación <em>SMS Backup & Restore</em></h4>
+    </div>
+    <div fxFlex="48">
+        <h4>Tienes la opción de subir un fichero exportando tus transacciones de tus paypals recibidos en formato CSV,
+            para ello te recomendamos desde tu cuenta de paypal dirigirte a
+            <em>Paypal -> Actividad -> Icono de descargar -> Personalizado -> Descarga de Actividad </em>, ahí podrás
+            especificar fechas y crear un informe que pasados unos segundos podrás
+            descargarte
+        </h4>
+    </div>
+</div>
+<div fxLayout="row wrap" fxLayoutGap="2%" fxLayoutAlign="space-between">
+    <div fxFlex="48">
+        <button mat-raised-button color="primary" (click)="inputSms.click()">Subir
+            bizums (xml)</button>
+            <button mat-raised-button color="primary" (click)="bizumsE.emit([])">Reiniciar</button>
+    </div>
+    <div fxFlex="48">
+        <button mat-raised-button color="primary" (click)="inputPaypal.click()">Subir
+            paypal (CVS)</button>
+            <button mat-raised-button color="primary" (click)="paypalsE.emit([])">Reiniciar</button>
+    </div>
+</div>
+
+
+
+
+
+
+
+<form [formGroup]="form">
+    <input type="file" hidden formControlName="inputSms" multiple accept=".xml" multiple (change)="SmsSubido($event)"
+        #inputSms />
+    <input type="file" hidden formControlName="inputPaypal" multiple accept=".csv" (change)="paypalSubido($event)"
+        #inputPaypal />
+</form>

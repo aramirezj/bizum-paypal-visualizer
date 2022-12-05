@@ -1,0 +1,88 @@
+@import "./custom_variables.scss";
+.tablaMaterial {
+    display: block;
+    font-family: Tahoma, Verdana;
+}
+.contenidoTabla {
+    overflow: auto;
+    max-height: 60vh;
+}
+
+.filaContenido,
+.filaEncabezado {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 24px;
+}
+
+.elementoContenido,
+.elementoEncabezado {
+    flex: 1;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.filaEncabezado {
+    background-color: $custom-primary-color !important;
+    .elementoEncabezado {
+        color: white !important;
+        font-weight: bold !important;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+        font-size: 12px;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+        text-align: left;
+    }
+}
+
+.elementoContenido {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    text-align: left;
+}
+
+.selectPro{
+    min-width: 15vw!important;
+}
+
+.filaContenido {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #303030 !important;
+}
+.filaContenido:nth-child(even) {
+    background: #474747 !important;
+}
+
+.elementoAcciones {
+    //white-space: nowrap;
+    overflow: visible;
+}
+.filaSeleccionada {
+    background-color: $custom-secondary-color!important;
+}
+.filaSeleccionada:nth-child(even) {
+    background-color: $custom-secondary-color!important;
+}
+.filaSeleccionada > * {
+    color: white !important;
+}
+.filaSeleccionada a {
+    color: black !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+.busquedaField {
+    width: 100%;
+}
+.nombreObjeto{
+    color:$custom-primary-color;
+}
+
+::ng-deep {
+    .mat-sort-header-arrow {
+        color: white !important;
+    }
+}

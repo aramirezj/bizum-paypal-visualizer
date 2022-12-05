@@ -1,0 +1,72 @@
+<app-buscador *ngIf="buscador || filtroAvanzado" [filtroAvanzado]="filtroAvanzado" (notify)="busqueda($event)">
+</app-buscador>
+
+<div class="tablaMaterial" matSort (matSortChange)="ordenacion($event)">
+    <!-- Encabezado de la tabla -->
+    <div class="filaEncabezado">
+        <div *ngFor="let titulo of visual;let i=index" [mat-sort-header]="modelo[i]" class="elementoEncabezado pointer">
+            <span [innerHTML]="titulo"></span>
+        </div>
+        <div *ngIf="objetos" class="elementoEncabezado">
+            <span *ngFor="let objeto of objetos">{{objeto.nombreVisual}}</span>
+        </div>
+        <div *ngIf="selectsPro" class="elementoEncabezado selectPro">
+            <span *ngFor="let selectPro of selectsPro">{{selectPro.columnaVisual}}</span>
+        </div>
+        <div *ngIf="accionesParsed?.length" class="elementoEncabezado">Acciones</div>
+    </div>
+
+    <!-- Condicional para la paginación, para saber que elementos mostrar en pantalla -->
+    <div class="contenidoTabla">
+        <ng-container *ngFor="let elemento of datosAMostrar;let i = index">
+            <ng-container
+                [ngTemplateOutlet]="paginacionAsincrona || !paginador ? paginacionAsincronaT : paginacionLocalT"
+                [ngTemplateOutletContext]="{elemento:elemento,i:i}"></ng-container>
+        </ng-container>
+    </div>
+</div>
+<mat-paginator *ngIf="paginador" [length]="pageEvent.length" [pageSize]="pageEvent.pageSize"
+    [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageEvent.pageIndex" (page)="paginacion($event)">
+</mat-paginator>
+
+
+<!-- PAGINACIONLOCAL Template para la evaluación de datos si utiliza la paginación local -->
+<ng-template #paginacionLocalT let-elemento='elemento' let-i='i'>
+    <div *ngIf="((pageEvent.pageIndex+1)*pageEvent.pageSize) > i && i >= ((pageEvent.pageIndex)*pageEvent.pageSize)"
+        [class]="elemento === elementoSeleccionado ? 'filaContenido filaSeleccionada pointer' : seleccionable ? 'filaContenido pointer' : 'filaContenido' "
+        (click)="seleccion(elemento)">
+        <!--Contenido del TD-->
+        <ng-template [ngTemplateOutlet]="TDContenido" [ngTemplateOutletContext]="{elemento:elemento}">
+        </ng-template>
+    </div>
+</ng-template>
+
+<!-- PAGINACIONASINCRONA Template para la evaluación de datos si usa la paginación asincrona-->
+<ng-template #paginacionAsincronaT let-elemento='elemento' let-i='i'>
+    <div [class]="elemento === elementoSeleccionado ? 'filaContenido filaSeleccionada pointer' : seleccionable ? 'filaContenido pointer' : 'filaContenido' "
+        (click)="seleccion(elemento)">
+        <!--Contenido del TD-->
+        <ng-template [ngTemplateOutlet]="TDContenido" [ngTemplateOutletContext]="{elemento:elemento}">
+        </ng-template>
+    </div>
+</ng-template>
+
+<!-- TDCONTENIDO Template utilizada para cargar el TD en cuestión -->
+<ng-template #TDContenido let-elemento='elemento'>
+    <div *ngFor="let atributo of modelo" class="elementoContenido">
+        <app-elemento-tabla [campo]="elemento[atributo]" [atributo]="atributo" [elemento]="elemento" [formatoTabla]="formatos">
+        </app-elemento-tabla>
+    </div>
+
+    <div *ngFor="let objeto of objetos;let j=index" class="elementoContenido">
+        <span (click)="$event.stopPropagation()">
+            <a class="nombreObjeto" (click)="openInspeccion(elemento,j)" *ngIf="elemento[objeto.nombreModelo]">
+                {{objeto.peticion === undefined ? elemento[objeto.nombreModelo][objeto.nombreAMostrar] :
+                elemento[objeto.nombreModelo]}}</a>
+        </span>
+    </div>
+    <div *ngIf="accionesParsed?.length" (click)="$event.stopPropagation()" class="elementoContenido elementoAcciones">
+        <app-accion-tabla *ngFor="let accion of accionesParsed" [accion]="accion" [elemento]="elemento"
+            (clicked)="doAccion(elemento,accion.funcion)"></app-accion-tabla>
+    </div>
+</ng-template>

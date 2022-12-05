@@ -1,0 +1,24 @@
+@import "../styles/tablas.scss";
+
+.elementoExpandido {
+    padding: 12px;
+    padding-right: 0;
+    background-color: gainsboro;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.show {
+    visibility: visible;
+}
+.iconExpandir {
+    float: right;
+}
+.clear {
+    clear: both;
+}
+.anidacionMensaje {
+    font-style: italic;
+}

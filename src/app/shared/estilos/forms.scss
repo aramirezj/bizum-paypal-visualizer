@@ -1,0 +1,109 @@
+@import "./custom_variables.scss";
+
+//95 vw libres
+//Contenedores de secciones de formularios
+.seccion {
+  padding: 2.5vw;
+}
+
+.numAlign {
+  text-align: right !important;
+}
+//90 vw libres
+
+.layoutContainer {
+  margin-top: 0.5vw;
+  margin-bottom: 0.5vw;
+}
+
+.buttonContainer {
+  padding-top: 1vh;
+}
+
+.sliderBox {
+  margin-top: 2vh;
+  margin-bottom: 3vh !important;
+  mat-hint {
+    display: block;
+  }
+  mat-slider {
+    width: 98%;
+    display: block;
+    margin: auto;
+    margin-top: 2vh;
+  }
+}
+
+.radioBox {
+  mat-radio-button {
+    //display: inline-block;
+    //margin-bottom: 0.5vh;
+  }
+}
+
+.chipBox {
+  p {
+    span {
+      color: lightslategrey;
+      font-size: small;
+      vertical-align: top;
+    }
+  }
+}
+
+//Elementos propios
+mat-radio-button {
+  margin: 0.5vw;
+}
+
+.mat-divider {
+  border-top-width: 3px;
+  background-color: $custom-secondary-color;
+}
+fieldset {
+  border-color: $custom-primary-color;
+  margin-bottom: 2vh;
+}
+legend {
+  color: $custom-primary-color;
+  font-weight: bold;
+}
+
+::ng-deep {
+  .mat-slider-thumb-label-text {
+    opacity: 1 !important;
+  }
+  .mat-slider-thumb-label {
+    border-radius: 50% 50% 0 !important;
+    transform: rotate(45deg) !important;
+  }
+  .mat-checkbox-label {
+    white-space: initial !important;
+  }
+}
+
+.red {
+  background: red;
+  color: white;
+}
+.green {
+  background: green;
+  color: white;
+}
+
+.selected {
+  background: $custom-tertiary-color;
+  color: white;
+}
+
+.mat-chip {
+  cursor: pointer;
+}
+
+.iconoMas {
+  vertical-align: initial;
+}
+::ng-deep .mat-datepicker-content .mat-calendar {
+  width: unset !important;
+  height: unset !important;
+}

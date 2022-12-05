@@ -1,0 +1,39 @@
+<div class="container" *ngIf="!muestraAvanzado">
+    <form enctype="multipart/form-data" [formGroup]="form">
+        <mat-form-field class="busquedaField" appearance="outline">
+            <mat-label>Escriba aquí el texto de búsqueda...</mat-label>
+            <input matInput formControlName="busqueda" (keyup)="busqueda($event.target['value'])">
+            <span *ngIf="!filtroAvanzado" matPrefix>
+                <mat-icon>search</mat-icon>
+            </span>
+            <span *ngIf="filtroAvanzado" class="iconAvanzado" matPrefix (click)="muestraAvanzado = true">
+                <mat-icon>manage_search</mat-icon>
+            </span>
+            <button mat-button type="button" *ngIf="form.get('busqueda').value" matSuffix mat-icon-button
+                aria-label="Borrar" (click)="form.reset()" (click)="busqueda('')">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+    </form>
+</div>
+
+<div class="container" *ngIf="muestraAvanzado">
+    <h3>Filtros disponibles:</h3>
+    <div style="margin-bottom: 4vh;"></div>
+    <form fxLayout="row wrap" fxLayoutAlign="left" [formGroup]="filtroAvanzado.form">
+        <div *ngFor="let campo of filtroAvanzado.campos">
+            <div *ngIf="campo.activo && filtroAvanzado.form.controls[campo.modelo]">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{campo.visual}}</mat-label>
+                    <input [formControlName]="campo.modelo" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+    <button style="margin-right:0.5vw" type="button" mat-mini-fab color="primary" (click)="busquedaAvanzada()">
+        <mat-icon class="iconoMas">search</mat-icon>
+    </button>
+    <button type="button" mat-mini-fab color="accent" (click)="muestraAvanzado = false">
+        <mat-icon class="iconoMas">close</mat-icon>
+    </button>
+</div>
