@@ -39,7 +39,6 @@ export class RecogidaComponent {
     if (event.target.files.length > 0) {
       const rawFiles: File[] = event.target.files;
       const textosXML: string[] = [];
-      console.log(rawFiles)
       let errores: boolean = false;
       const formatosValidos: boolean = this.fileService.bizumsValidos(rawFiles);
       if (formatosValidos) {

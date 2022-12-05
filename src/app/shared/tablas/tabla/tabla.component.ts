@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Formulario, TF } from '../../modelos/Formulario';
 import { SharedService } from '../../shared.service';
 
 import { TablaMaestra } from '../TablaMaestra';
@@ -64,53 +63,7 @@ export class TablaComponent extends TablaMaestra{
    * @param accion Acción a realizar y devolver
    */
   doAccion(elemento: any, accion: string): void {
-    if (!this.accionesAutoGestionadas.includes(accion)) {
-      this.notify.emit({ accion, elemento });
-    } else {
-      switch (accion) {
-        case 'eliminarT':
-          this.sharedService.muestraConfirmacion('eliminarGenerico2', elemento, this.modelo[0], this.visual[0]).subscribe(accept => {
-            if (accept) {
-              this.datos.splice(this.datos.indexOf(elemento), 1);
-              this.datosAMostrar.splice(this.datosAMostrar.indexOf(elemento), 1);
-              this.notify.emit({ accion, elemento });
-            }
-          });
-          break;
-        case 'eliminar':
-          this.sharedService.muestraConfirmacion('eliminarGenerico2', elemento, this.modelo[0], this.visual[0]).subscribe(accept => {
-            if (accept) {
-              this.notify.emit({ accion, elemento });
-            }
-          });
-          break;
-        case 'editarT':
-          if (this.formulario) {
-            this.formulario.elemento = elemento;
-            this.sharedService.muestraFormulario(this.formulario).subscribe(dialog => dialog.subscribe(elementModified => {
-              if (elementModified) {
-                elemento = elementModified;
-                this.notify.emit({ accion, elemento });
-              }
-            }));
-          } else {
-            const form = new Formulario(TF.EDICION, this.modelo, this.visual, 'Edición del elemento');
-            form.elemento = elemento;
-            this.sharedService.muestraFormulario(form).subscribe(dialog => dialog.subscribe(resp => {
-              if (resp) {
-                if (this.clavePrimaria) {
-                  if (!this.sharedService.findRepeat(this.datos.slice().concat([resp]), this.clavePrimaria)) {
-                    this.notify.emit({ accion, elemento });
-                  }
-                } else {
-                  this.notify.emit({ accion, elemento });
-                }
-              }
-            }));
-          }
-          break;
-      }
-    }
+
   }
 
 

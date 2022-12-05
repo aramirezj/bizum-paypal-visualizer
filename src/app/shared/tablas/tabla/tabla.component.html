@@ -10,9 +10,6 @@
         <div *ngIf="objetos" class="elementoEncabezado">
             <span *ngFor="let objeto of objetos">{{objeto.nombreVisual}}</span>
         </div>
-        <div *ngIf="selectsPro" class="elementoEncabezado selectPro">
-            <span *ngFor="let selectPro of selectsPro">{{selectPro.columnaVisual}}</span>
-        </div>
         <div *ngIf="accionesParsed?.length" class="elementoEncabezado">Acciones</div>
     </div>
 

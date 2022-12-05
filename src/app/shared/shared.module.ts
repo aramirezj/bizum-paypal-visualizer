@@ -5,16 +5,9 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 
 
 //Componentes
-import { ConversionDirective } from './directivas/conversion.directive';
-import { DragAndDropDirective } from './directivas/dragAndDrop.directive';
-import { MatErrorMessagesDirective } from './directivas/matErrorMessages.directive';
 import { BuscadorComponent } from './formularios/buscador/buscador.component';
-import { ConfirmacionComponent } from './formularios/confirmacion/confirmacion.component';
-import { EditarGenericoComponent } from './formularios/editar-generico/editar-generico.component';
-import { SelectMaestroComponent } from './formularios/select-maestro/select-maestro.component';
 import { AccionTablaComponent } from './tablas/accion-tabla/accion-tabla.component';
 import { ElementoTablaComponent } from './tablas/elemento-tabla/elemento-tabla.component';
-import { TablaInfinitaComponent } from './tablas/tabla-infinita/tabla-infinita.component';
 import { TablaComponent } from './tablas/tabla/tabla.component';
 import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -38,17 +31,10 @@ export const MY_FORMATS = {
 
 @NgModule({
   declarations: [
-    EditarGenericoComponent,
-    ConfirmacionComponent,
-    ConversionDirective,
-    DragAndDropDirective,
-    MatErrorMessagesDirective,
     ElementoTablaComponent,
     AccionTablaComponent,
     TablaComponent,
-    TablaInfinitaComponent,
     BuscadorComponent,
-    SelectMaestroComponent
   ],
   imports: [
     CommonModule,
@@ -58,8 +44,6 @@ export const MY_FORMATS = {
   ],
   exports: [
     TablaComponent,
-    TablaInfinitaComponent,
-    SelectMaestroComponent,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule

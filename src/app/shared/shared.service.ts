@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
-import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormArray } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { formatDate } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { ConfirmacionComponent } from './formularios/confirmacion/confirmacion.component';
-import { EditarGenericoComponent } from './formularios/editar-generico/editar-generico.component';
 import { Accion } from './modelos/Accion';
-import { Formulario, TF } from './modelos/Formulario';
 
 /** Servicio de utilidades para la aplicación */
 @Injectable()
@@ -20,7 +15,6 @@ export class SharedService {
         guardarGenerico: '¿Está seguro de guardar el elemento'
     };
     constructor(
-        private dialog: MatDialog,
         private router: Router,
         private snackBar: MatSnackBar
     ) {
@@ -44,119 +38,12 @@ export class SharedService {
         }
     }
 
-    /**
-     * Función que abre un EditarGenerico a traves de un formulario
-     *
-     * @param form Formulario a mostrar
-     * @param size VW del dialogo
-     * @returns Observable del dialogo
-     */
-    muestraFormulario(form: Formulario, size?: string): Observable<any> {
-        return this.openGenericDialog(EditarGenericoComponent, form, size ? size : '45vw', null, null, true);
-    }
-    /**
-     * Muestra un formulario generico para la creación de un elemento
-     *
-     * @param columnasModelo Atributos del objeto
-     * @param columnasVisuales Nombres visuales del objeto
-     * @returns Observable del dialogo
-     */
-    creacionGenerica(columnasModelo: string[], columnasVisuales: string[]): Observable<any> {
-        const form = new Formulario(TF.CREACION, columnasModelo, columnasVisuales, 'Creación del elemento');
-        return new Observable(observer => {
-            this.muestraFormulario(form).subscribe(dialog => dialog.subscribe(resp => {
-                observer.next(resp);
-                observer.complete();
-            }))
-        })
-    }
-
-    /**
-     * Función que gestiona la apertura de un dialogo de confirmación
-     *
-     * @param tipo El identificador del catálogo de mensajes, si no lo encuentra, el tipo actua de mensajes
-     * @param elemento Elemento del que se pide confirmación
-     * @param atributo Atributo del que se cogerá el identificador en caso de ser necesario
-     * @param visual Texto a mostrar para el atributo
-     * @returns Observable del dialogo
-     */
-    muestraConfirmacion(tipo: string, elemento?: any, atributo?: string, visual?: string): Observable<any> {
-        const dialogRef = this.dialog.open(ConfirmacionComponent, this.openDialog(30));
-        let mensaje = elemento ? this.mensajes[tipo].replace('??', visual).replace('??', elemento[atributo]) : this.mensajes[tipo];
-        mensaje = mensaje ? mensaje : tipo;
-        dialogRef.componentInstance.mensaje = mensaje;
-        return dialogRef.afterClosed();
-    }
 
 
-    /**
-     * Función que devuelve la configuración de un dialogo
-     *
-     * @param size Parametro opcional para determinar el tamaño del dialogo
-     * @returns Configuración del dialogo
-     */
-    openDialog(size?: number): MatDialogConfig {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = false;
-        dialogConfig.width = size ? size + 'vw' : '30vw';
-        dialogConfig.height = 'auto';
-        dialogConfig.maxWidth = size ? size + 'vw' : '30vw';
-        dialogConfig.autoFocus = true;
-        return dialogConfig;
-    }
-    /**
-     * Apertura de un dialogo para un componente a recibir
-     *
-     * @param component Componente a invocar
-     * @param data Datos a transmitir al componente
-     * @param size Ancho de la ventana emergente
-     * @param height Altura de la ventana emergente
-     * @param directInject Si debe injectar atributos en el componente
-     * @param disableClose Si debe deshabilitar el cierre clicando fuera
-     */
-    openGenericDialog(component: any, data: any, size?: string, height?: string, directInject?: any[], disableClose?: boolean): Observable<any> {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.autoFocus = false;
-        dialogConfig.data = data;
-        dialogConfig.width = size ? size : 'fit-content';
-        dialogConfig.maxWidth = size ? size : 'fit-content';
-        dialogConfig.height = height ? height : null;
-        dialogConfig.maxHeight = height ? height : null;
-        dialogConfig.disableClose = disableClose ? disableClose : false;
-        const dialogRef = this.dialog.open(component, dialogConfig);
-        if (directInject) {
-            directInject.forEach(direct => dialogRef.componentInstance[direct.name] = direct.value)
-        }
-        return new Observable(observer => {
-            observer.next(dialogRef.afterClosed());
-            observer.complete();
-        });
-    }
-    /**
-     * Apertura de un dialogo para un componente a recibir. Devuelve una referencia al dialogo
-     *
-     * @param component Componente a invocar
-     * @param data Datos a transmitir al componente
-     * @param size Ancho de la ventana emergente
-     * @param height Altura de la ventana emergente
-     * @param directInject Si debe injectar atributos en el componente
-     * @param disableClose Si debe deshabilitar el cierre clicando fuera
-     */
-    getGenericDialogWithRef(component: any, data: any, size?: string, height?: string, directInject?: any[], disableClose?: boolean): MatDialogRef<any, any> {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.autoFocus = false;
-        dialogConfig.data = data;
-        dialogConfig.width = size ? size : 'fit-content';
-        dialogConfig.maxWidth = size ? size : 'fit-content';
-        dialogConfig.height = height ? height : null;
-        dialogConfig.maxHeight = height ? height : null;
-        dialogConfig.disableClose = disableClose ? disableClose : false;
-        const dialogRef = this.dialog.open(component, dialogConfig);
-        if (directInject) {
-            directInject.forEach(direct => dialogRef.componentInstance[direct.name] = direct.value)
-        }
-        return dialogRef;
-    }
+
+
+
+
 
     /**
      * Función que busca campos que tengan cierto atributo repetido

@@ -6,10 +6,8 @@ import { BuscadorComponent } from '../formularios/buscador/buscador.component';
 import { Accion } from '../modelos/Accion';
 import { FiltroAvanzado } from '../modelos/FiltroAvanzado';
 import { FormatosTabla } from '../modelos/FormatosTabla';
-import { Formulario, TF } from '../modelos/Formulario';
 import { ObjetoTabla } from '../modelos/ObjetoTabla';
 import { PeticionPaginacion } from '../modelos/PeticionPaginacion';
-import { SelectProTabla } from '../modelos/SelectProTabla';
 import { SharedService } from '../shared.service';
 
 
@@ -36,8 +34,6 @@ export class TablaMaestra {
   @Input() buscador: boolean = false;
   /** Formatos a utilizar en la tabla (Euro,porcentaje,etc) */
   @Input() formatos: FormatosTabla;
-  /** Formulario que se podrá incluir en el formulario, para, si llama a editarT, invoque el formulario para su edición */
-  @Input() formulario: Formulario;
   /** Clave primaria que tendrá la tabla. Se utilizará en las inserciones por método y edición */
   @Input() clavePrimaria: string;
   /** Petición asincrona para cargar datos y paginador según peticiones HTTP */
@@ -50,8 +46,6 @@ export class TablaMaestra {
   @Input() elementoPreseleccionado: any;
   /** Atributo para cargar objetos complejos a las tablas */
   @Input() objetos: ObjetoTabla[];
-  /** Atributo para cargar selects pro a las tablas */
-  @Input() selectsPro: SelectProTabla[];
   /** En el caso de ser una tabla hija, emitira valor al cargar */
   @Input() subjectLoaded: BehaviorSubject<any>;
   /** Filtros para usar en el filtro avanzado */
@@ -228,27 +222,8 @@ export class TablaMaestra {
  * @param posicion Posición del elemento
  */
   openInspeccion(elemento: any, posicion: number): void {
-    const objTabla = this.objetos[posicion];
-    const form = new Formulario(TF.INSPECCION, objTabla.columnasModelo, objTabla.columnasVisuales, `Inspección de ${objTabla.nombreVisual}`);
-    if (elemento[objTabla.nombreModelo]) {
-      if (objTabla.peticion) {
-        const params = []
-        objTabla.peticion.params.map(claveParam => {
-          params.push(elemento[claveParam])
-        });
 
-        objTabla.peticion.peticion(...params).subscribe(resp => {
-          form.elemento = resp;
-          this.sharedService.muestraFormulario(form).subscribe();
-        }
-        );
-      } else {
-        form.elemento = elemento[objTabla.nombreModelo];
-        this.sharedService.muestraFormulario(form).subscribe();
-      }
-    } else {
-      this.sharedService.openSnackBar('Este elemento no tiene ' + objTabla.nombreVisual, 3);
-    }
+
   }
 
   /** Función para ejecutar desde componentes padres para emitir una deselección */

@@ -38,7 +38,6 @@ export class BuscadorComponent implements OnInit {
    // const busquedaAsociada: BusquedaAvanzadaObj[] = [];
    const busquedaAsociada: any[] = [];
     this.filtroAvanzado.campos.forEach(campo => busquedaAsociada.push({ clave: campo.modelo, valor: this.filtroAvanzado.form.get(campo.modelo).value }));
-    console.log(busquedaAsociada)
     // TODO cuando te to ready this.notify.emit({ tipo: 'avanzado', resultado: busquedaAsociada });
   }
 

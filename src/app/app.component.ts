@@ -1,12 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { NgxCsvParser } from 'ngx-csv-parser';
-import { forkJoin, Observable } from 'rxjs';
-import { Parser, parseString } from 'xml2js';
 import { Pago } from './interfaces/Pago';
 import { PagoTotal } from './interfaces/PagoTotal';
-import { FileService } from './services/file.service';
 import { TablaComponent } from './shared/tablas/tabla/tabla.component';
 
 @Component({
@@ -61,39 +56,6 @@ export class AppComponent {
 
   }
 
-  /*generaPagos() {
-
-    this.headersPeticion = {
-      headers: new HttpHeaders()
-        .append('Access-Control-Allow-Methods', 'GET').append('Access-Control-Allow-Origin', '*')
-        .append('Access-Control-Allow-Headers', "Access-Control-Allow-Headers, Access-Control-Allow-Origin, Access-Control-Request-Method"), responseType: 'text'
-    }
-    const peticionSMS: Observable<any> = this.http.get('assets/sms.xml', this.headersPeticion);
-    const peticionPaypalNuevo: Observable<any> = this.http.get('assets/arj.csv', this.headersPeticion);
-    const peticionPaypalViejo: Observable<any> = this.http.get('assets/paypalAntiguo.csv', this.headersPeticion);
-    forkJoin({
-      sms: peticionSMS,
-      paypalNuevo: peticionPaypalNuevo,
-      paypalViejo: peticionPaypalViejo
-    }).subscribe(ficheros => {
-      this.paypals = [];
-      this.bizums = this.fileService.parseaXML([ficheros.sms]);
-
-
-      this.paypals.push(...this.fileService.parseaCSV([ficheros.paypalViejo]));
-      this.paypals.push(...this.fileService.parseaCSV([ficheros.paypalNuevo]));
-
-
-
-      this.generaEstadisticas();
-      this.pagosListos = true;
-
-
-    })
-
-
-  }*/
-
   obtieneBizums(bizums: Pago[]) {
     if (bizums.length) {
       this.pagosListos = false;
@@ -137,7 +99,6 @@ export class AppComponent {
     //Aplicamos filtros
     if (this.bizums?.pagos) this.bizumsFiltrados = this.filtraPersonas(this.bizums.pagos);
     if (this.paypals?.pagos) this.paypalsFiltrados = this.filtraPersonas(this.paypals.pagos);
-    console.log(this.tPaypals)
     if(this.tBizums) this.tBizums.refrescaTabla(this.bizumsFiltrados?.pagos);
     if(this.tPaypals) this.tPaypals.refrescaTabla(this.paypalsFiltrados?.pagos);
     this.pagosListos = true;
