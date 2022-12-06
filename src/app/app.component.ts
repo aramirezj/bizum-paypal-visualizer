@@ -59,8 +59,7 @@ export class AppComponent {
   obtieneBizums(bizums: Pago[]) {
     if (bizums.length) {
       this.pagosListos = false;
-      let total: number = 0;
-      bizums.forEach(bizum => total += bizum.cantidad);
+      const total = bizums.reduce((accumulator, item) => accumulator + item.cantidad, 0);
       this.bizums = {
         total: total,
         pagos: bizums
@@ -76,8 +75,8 @@ export class AppComponent {
   obtienePaypals(paypals: Pago[]) {
     if (paypals.length) {
       this.pagosListos = false;
-      let total: number = 0;
-      paypals.forEach(paypal => total += paypal.cantidad);
+      const total = paypals.reduce((accumulator, item) => accumulator + item.cantidad, 0);
+
       this.paypals = {
         total: total,
         pagos: paypals
