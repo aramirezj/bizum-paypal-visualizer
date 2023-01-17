@@ -30,6 +30,8 @@ export class AppComponent {
 
   pagosListos: boolean = false;
 
+  fechaFiltro:Date;
+
   constructor(
   
   ) {
@@ -45,14 +47,17 @@ export class AppComponent {
   createForm() {
 
     this.formularioRestriccion = new FormGroup({
-      personasBloqueadas: new FormControl(this.personasBloqueadas)
+      personasBloqueadas: new FormControl(this.personasBloqueadas),
+      fecha: new FormControl()
     });
-
-    this.formularioRestriccion.get('personasBloqueadas').valueChanges.subscribe(listado => {
-      this.personasBloqueadas = listado;
+    this.formularioRestriccion.valueChanges.subscribe(() => {
+      console.log(this.formularioRestriccion.value.personasBloqueadas)
+      this.personasBloqueadas = this.formularioRestriccion.value.personasBloqueadas;
+      this.fechaFiltro = new Date(this.formularioRestriccion.value.fecha);
       localStorage.setItem('personasBloqueadas', JSON.stringify(this.personasBloqueadas));
       this.generaEstadisticas();
     })
+
 
   }
 
@@ -112,12 +117,17 @@ export class AppComponent {
   filtraPersonas(pagos: Pago[]): PagoTotal {
     let total: number = 0;
     pagos.forEach(pago => { if (!this.personas.includes(pago.remitente)) this.personas.push(pago.remitente) });
-    const pagosFiltrados: Pago[] = pagos.filter(pago => !this.personasBloqueadas.includes(pago.remitente));
-    pagosFiltrados.forEach(pago => {
+    let pagosPersonasFiltradas: Pago[] = pagos.filter(pago => !this.personasBloqueadas.includes(pago.remitente));
+    
+    if(this.fechaFiltro){
+      const fechaInicio:Date = new Date(this.fechaFiltro)
+      pagosPersonasFiltradas = pagos.filter(pago => new Date(pago.fecha)>fechaInicio);
+    }
+    pagosPersonasFiltradas.forEach(pago => {
       total += pago.cantidad;
       this.addPagoPersona(pago);
     });
-    return { pagos: pagosFiltrados, total };
+    return { pagos: pagosPersonasFiltradas, total };
 
   }
 

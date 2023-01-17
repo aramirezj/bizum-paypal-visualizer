@@ -13,7 +13,6 @@
 
     <div class="example-sidenav-content">
         <!-- Resultado del enrutamiento -->
-
         <app-recogida (bizumsE)="obtieneBizums($event)" (paypalsE)="obtienePaypals($event)"></app-recogida>
 
         <div fxLayout="row wrap" fxLayoutGap="2%" fxLayoutAlign="space-between" style="margin-bottom: 5vh;">
@@ -32,10 +31,17 @@
                         <mat-option *ngFor="let persona of personas" [value]="persona">{{persona}}</mat-option>
                     </mat-select>
                 </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Empezar a filtrar desde:</mat-label>
+                    <input formControlName="fecha"  matInput [matDatepicker]="dp">
+                    <mat-hint></mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker #dp></mat-datepicker>
+                  </mat-form-field>
             </form>
             <div *ngIf="bizumsFiltrados || paypalsFiltrados">
                 <p>Filtrando a un total de {{personas.length}} personas...</p>
-                <h2>Tu total filtrado es {{bizumsFiltrados?.total ?? 0 + paypalsFiltrados?.total ?? 0}} €</h2>
+                <h2>Tu total filtrado es {{(bizumsFiltrados?.total ?? 0) + (paypalsFiltrados?.total ?? 0)}} €</h2>
             </div>
         </div>
 

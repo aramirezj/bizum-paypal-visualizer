@@ -13,8 +13,21 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GraficosComponent } from './graficos/graficos.component';
 import { RecogidaComponent } from './recogida/recogida.component';
 import { FileService } from './services/file.service';
-registerLocaleData(localeEs, 'es');
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 
+registerLocaleData(localeEs, 'es');
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/yyyy',
+  },
+  display: {
+    dateInput: 'DD/MM/yyyy',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,9 +41,12 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     SharedModule,
     NgxCsvParserModule,
-    NgxChartsModule
+    NgxChartsModule,
+    MatDatepickerModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'es' },FileService],
+  providers: [    { provide: LOCALE_ID, useValue: 'es-ES' },
+  { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },FileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
